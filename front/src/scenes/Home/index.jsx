@@ -1,21 +1,79 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 
-import { Button } from 'react-materialize'
+import { Button, Table, Row, Input } from 'react-materialize'
+
+import GetProdutosService from '../../services/GetProdutosService'
+import GetProdutoPorDescricaoService from '../../services/GetProdutoPorDescricaoService'
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        shouldRedirectLogin: false
+        shouldRedirectLogin: false,
+        produtos: [],
+        busca: ''
     };
   }
+
+  componentDidMount() {
+      this.getProdutos()
+  }
+
+  getProdutos() {
+      GetProdutosService
+          .getProdutos()
+          .then((result) => {
+              this.setState({
+                  produtos: result.data
+              })
+              console.log(result.data)
+          }).catch((err) => {
+          })
+  }
+
+  getProdutosPorDescricao = () => {
+      GetProdutoPorDescricaoService
+          .getProdutoPorDescricao(this.state.busca)
+          .then((result) => {
+              this.setState({
+                  produtos: result.data
+              })
+              console.log(result.data)
+          }).catch((err) => {
+          })
+  }
+
+  handleChange = (event) => {
+      const target = event.target
+      const value = target.value
+      const name = target.name
+      this.setState({
+          [name]: value
+      })
+  }
+
+
 
   _logout = () => {
     this.setState({
         shouldRedirectLogin: true
     });
   };
+
+  renderProdutos() {
+    return this.state.produtos.map((p,k) => {
+      return<tr>
+            <td>{p._codigo}</td>
+            <td>{p._descricao}</td>
+            <td>{p._un}</td>
+            <td>{p._estoque}</td>
+            <td>{p._precoMedio}</td>
+            <td>{p._codigo}</td>
+            <td>{p._codigo}</td>
+          </tr>
+    })
+  }
   
 
   render() {
@@ -26,6 +84,30 @@ export default class Home extends Component {
     return (
       <div>
           <h1>Home</h1>
+          <Row>
+              <Input type="text" label="Consultar produto" s={6}
+                      name="busca"
+                      onChange={this.handleChange}
+                      value={this.state.busca} />
+              <Button waves='light' onClick={this.getProdutosPorDescricao}>Buscar</Button>
+          </Row>
+          <Table>
+            <thead>
+              <tr>
+                <th data-field="id">Codigo</th>
+                <th data-field="name">Descricao</th>
+                <th data-field="price">un</th>
+                <th data-field="price">Estoque</th>
+                <th data-field="price">Preço Médio</th>
+                <th data-field="price">Preço Total</th>
+                <th data-field="price">Ação</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {this.renderProdutos()}
+            </tbody>
+          </Table>
           <Button waves='light' className="red" onClick={this._logout}>Logout</Button>
       </div>
     );

@@ -3,7 +3,7 @@ const Produto = require('../dominio/produto')
 let produtos = []
 
 function getProdutoPorDescricao(descricao) {
-    return produtos.filter(p => p.descricao.toLowerCase().indexOf(descricao.toLowerCase()) !== -1)
+    return produtos.filter(p => p._descricao.toLowerCase().indexOf(descricao.toLowerCase()) !== -1)
 }
 
 function getProdutos() {
