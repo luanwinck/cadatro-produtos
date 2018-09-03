@@ -1,0 +1,26 @@
+const produtoService = require('../service/produtoService')
+
+exports.get = (req, res, next) => {
+    let descricao = req.params.descricao;
+
+    let produtosFiltrados = produtoService.getProdutoPorDescricao(descricao)
+
+    res.status(200).send(produtosFiltrados);
+};
+
+exports.getAll = (req, res, next) => {
+
+    let produtos = produtoService.getProdutos()
+
+    res.status(200).send(produtos);
+};
+
+exports.post = (req, res) => {
+    let produto = req.body
+
+    produtoService.adicionarProduto(produto)
+
+    let produtos = produtoService.getProdutos()
+
+    res.status(200).send(produtos);
+};
