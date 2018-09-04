@@ -54,7 +54,7 @@ class App extends Component {
             <Route exact path="/home" component={Home}/>
             <Route exact path="/login" component={Login}/>
             <Route exact path="/cadastrar-produto" component={CreateOrEditProduto}/>
-            <Route exact path="/editar-produto/:id" component={CreateOrEditProduto}/>
+            <Route exact path="/editar-produto/:codigo" component={CreateOrEditProduto}/>
 
             <Redirect to="/cadastrar-produto" />
         </Switch>

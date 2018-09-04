@@ -24,3 +24,22 @@ exports.post = (req, res) => {
 
     res.status(200).send(produtos);
 };
+
+exports.put = (req, res) => {
+    let produto = req.body
+
+    produtoService.alterarProduto(produto)
+
+    let produtos = produtoService.getProdutos()
+
+    res.status(200).send(produtos);
+};
+
+exports.delete = (req, res, next) => {
+    let codigo = req.params.codigo;
+
+    produtoService.deletarProduto(codigo)
+
+    res.status(200).send();
+};
+

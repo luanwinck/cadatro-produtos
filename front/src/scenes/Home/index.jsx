@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 
-import { Button, Table, Row, Input } from 'react-materialize'
+import './style.css'
+
+import { Button, Table, Row, Input, Icon } from 'react-materialize'
 
 import GetProdutosService from '../../services/GetProdutosService'
 import GetProdutoPorDescricaoService from '../../services/GetProdutoPorDescricaoService'
@@ -11,9 +13,13 @@ export default class Home extends Component {
     super(props);
     this.state = {
         shouldRedirectLogin: false,
+        shouldRedirectCadastrarProduto: false,
+        shouldRedirectEditarProduto: false,
         produtos: [],
-        busca: ''
+        busca: '',
+        codigo: ''
     };
+    
   }
 
   componentDidMount() {
@@ -53,6 +59,13 @@ export default class Home extends Component {
       })
   }
 
+  _goToEditProduto = (codigo) => {
+      console.log(codigo)
+    this.setState({
+        shouldRedirectEditarProduto: true,
+        codigo
+    });
+  };
 
 
   _logout = () => {
@@ -69,8 +82,11 @@ export default class Home extends Component {
             <td>{p._un}</td>
             <td>{p._estoque}</td>
             <td>{p._precoMedio}</td>
-            <td>{p._codigo}</td>
-            <td>{p._codigo}</td>
+            <td  onClick={() => this._goToEditProduto(p._codigo)}>{p._codigo}</td>
+            <td>
+                <span className="icons" onClick={() => this._goToEditProduto(p._codigo)}><Icon>create</Icon></span>
+                <span className="icons"><Icon>clear</Icon></span>
+            </td>
           </tr>
     })
   }
@@ -79,6 +95,11 @@ export default class Home extends Component {
   render() {
     if (this.state.shouldRedirectLogin) {
         return <Redirect to="/login" />
+    } else if (this.state.shouldRedirectCadastrarProduto) {
+        return <Redirect to="/cadastrar-produto" />
+    } else if (this.state.shouldRedirectEditarProduto) {
+        console.log(this.state.codigo)
+        return <Redirect to={`/editar-produto/${this.state.codigo}`} />
     }
 
     return (

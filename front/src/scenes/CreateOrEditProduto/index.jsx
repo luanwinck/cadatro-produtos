@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { Row, Input, Button } from 'react-materialize'
 
 import CadastrarProdutoService from '../../services/CadastrarProdutoService'
+import AlterarProdutoService from '../../services/AlterarProdutoService'
 
 export default class CreateOrEditProduto extends Component {
   constructor(props) {
@@ -36,6 +37,23 @@ export default class CreateOrEditProduto extends Component {
         })
   };
 
+  _alterarProduto = () => {
+    const post = this.state
+    AlterarProdutoService
+    .alterarProduto()
+        .then((result) => {
+            console.log(result.data)
+            // this.setTempoAlert()
+        }).catch((err) => {
+            console.log('err')
+            // this.setState({
+            //     error: err.response.data.error,
+            //     success: ''
+            // })
+            // this.setTempoAlert()
+        })
+  };
+
 
 
   render() {
@@ -46,10 +64,13 @@ export default class CreateOrEditProduto extends Component {
     return (
       <div>
           <Row>
-              <Input type="email" label="Email" s={12} />
-              <Input type="password" label="password" s={12} />
+              <Input type="text" label="Descrição" s={12} />
+              <Input type="text" label="UN" s={12} />
+              <Input type="number" label="Estoque" s={12} />
+              <Input type="number" label="Preço Médio" s={12} />
           </Row>
           <Button waves='light' onClick={this._cadastrarProduto}>Cadastrar produto</Button>
+          <Button waves='light' onClick={this._alterarProduto}>Alterar produto</Button>
           <Button waves='light' onClick={this._backToHome}>Home</Button>
       </div>
     );

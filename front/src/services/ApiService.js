@@ -13,8 +13,19 @@ class ApiService {
             codigo: 'codigo',
             descricao: 'descricao',
             un: 'un',
-            estoque: 'estoque',
-            precoMedio: 'precoMedio',
+            estoque: 10,
+            precoMedio: 7.00,
+            }, configHeader)
+    }
+
+    static alterarProduto(title, description, text, image) {
+        
+        return axios.put(`${CONFIG.API_URL_BASE}/produto/alterar`, {
+            codigo: 2,
+            descricao: 'descricaoAlterado',
+            un: 'un',
+            estoque: 10,
+            precoMedio: 10.00,
             }, configHeader)
     }
 
