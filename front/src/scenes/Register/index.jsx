@@ -45,7 +45,10 @@ export default class Loading extends Component {
         RegisterService
             .registrar(user.nome, user.email, user.password)
             .then(() => {
-                console.log('registrado')
+                this.setState({
+                    success: 'Registro realizado com sucesso!',
+                    error: ''
+                })
             })
             .catch({
 
@@ -144,9 +147,11 @@ export default class Loading extends Component {
 
         return (
         <div className="container-login">
-            {this._renderSuccess()}
-            {this._renderError()}
             <h1>Faça seu cadastro</h1>
+            <div className="alert-login">
+                {this._renderError()}
+                {this._renderSuccess()}
+            </div>
             <Row>
                 {this._renderNome()}
                 {this._renderEmail()}
