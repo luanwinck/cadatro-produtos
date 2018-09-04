@@ -60,12 +60,17 @@ export default class Home extends Component {
   }
 
   _goToEditProduto = (codigo) => {
-      console.log(codigo)
     this.setState({
         shouldRedirectEditarProduto: true,
         codigo
     });
   };
+
+  _goToCreateProduto = () => {
+  this.setState({
+      shouldRedirectCadastrarProduto: true,
+  });
+};
 
 
   _logout = () => {
@@ -104,7 +109,11 @@ export default class Home extends Component {
 
     return (
       <div>
-          <h1>Home</h1>
+          <div className='header-home'>
+            <Button className='btn' waves='light' onClick={this._goToCreateProduto}>Cadastrar novo produto</Button>
+            <h1>Home</h1>
+            <Button className='btn' waves='light' className="red" onClick={this._logout}>Logout</Button>
+          </div>
           <Row>
               <Input type="text" label="Consultar produto" s={6}
                       name="busca"
@@ -129,7 +138,6 @@ export default class Home extends Component {
               {this.renderProdutos()}
             </tbody>
           </Table>
-          <Button waves='light' className="red" onClick={this._logout}>Logout</Button>
       </div>
     );
   }

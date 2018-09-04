@@ -2,3 +2,12 @@
     cursor: pointer;
     padding: 8px;
 }
+
+.btn {
+    margin: 8px;
+}
+
+.header-home{
+    display: flex;
+    justify-content: space-between;
+}

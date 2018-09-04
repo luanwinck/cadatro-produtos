@@ -5,18 +5,48 @@ import { Row, Input, Button } from 'react-materialize'
 
 import CadastrarProdutoService from '../../services/CadastrarProdutoService'
 import AlterarProdutoService from '../../services/AlterarProdutoService'
+import GetProdutoPorIdService from '../../services/GetProdutoPorIdService'
 
 export default class CreateOrEditProduto extends Component {
   constructor(props) {
     super(props);
     this.state = {
       shouldRedirectHome: false,
+      codigo: '',
       descricao: '',
       un: '',
       estoque: '',
-      precoMedio: ''
+      precoMedio: '',
+      inputPreenchido: undefined,
+      editarProduto: false
     };
   }
+
+  componentDidMount() {
+        if (!!this.props.match.params.codigo) {
+            const codigo = this.props.match.params.codigo
+
+            GetProdutoPorIdService
+            .getProdutoPorId(codigo)
+                .then((result) => {
+                    const produto = result.data
+                    this.setState({
+                        codigo,
+                        descricao: produto._descricao,
+                        un: produto._un,
+                        estoque: produto._estoque,
+                        precoMedio: produto._precoMedio,
+                        inputPreenchido: 'x',
+                        editarProduto: true
+                    })
+                }).catch((err) => {
+                    this.setState({
+                        error: '',
+                    })
+                })
+        }
+    }
+
 
   handleChange = (event) => {
       const target = event.target
@@ -51,9 +81,9 @@ export default class CreateOrEditProduto extends Component {
   };
 
   _alterarProduto = () => {
-    const post = this.state
+    const produto = this.state
     AlterarProdutoService
-    .alterarProduto()
+    .alterarProduto(produto.codigo, produto.descricao, produto.un, produto.estoque, produto.precoMedio)
         .then((result) => {
             console.log(result.data)
             // this.setTempoAlert()
@@ -80,23 +110,30 @@ export default class CreateOrEditProduto extends Component {
               <Input type="text" label="Descrição" s={12}
                       name="descricao"
                       onChange={this.handleChange}
-                      value={this.state.descricao} />
+                      value={this.state.descricao}
+                      placeholder={this.state.inputPreenchido}/>
               <Input type="text" label="UN" s={12}
                       name="un"
                       onChange={this.handleChange}
-                      value={this.state.un} />
+                      value={this.state.un} 
+                      placeholder={this.state.inputPreenchido}/>
               <Input type="number" label="Estoque" s={12} 
                       name="estoque"
                       onChange={this.handleChange}
-                      value={this.state.estoque} />
+                      value={this.state.estoque} 
+                      placeholder={this.state.inputPreenchido}/>
               <Input type="number" label="Preço Médio" s={12}
                       name="precoMedio"
                       onChange={this.handleChange}
-                      value={this.state.precoMedio} />
+                      value={this.state.precoMedio} 
+                      placeholder={this.state.inputPreenchido}/>
           </Row>
-          <Button waves='light' onClick={this._cadastrarProduto}>Cadastrar produto</Button>
-          <Button waves='light' onClick={this._alterarProduto}>Alterar produto</Button>
-          <Button waves='light' onClick={this._backToHome}>Home</Button>
+
+          <Button className='btn' waves='light' onClick={this._backToHome}>Home</Button>
+
+          {this.state.editarProduto ? 
+            <Button className='btn' waves='light' onClick={this._alterarProduto}>Alterar produto</Button> : 
+            <Button className='btn' waves='light' onClick={this._cadastrarProduto}>Cadastrar produto</Button>}
       </div>
     );
   }

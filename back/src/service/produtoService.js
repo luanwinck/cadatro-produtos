@@ -1,13 +1,14 @@
 const Produto = require('../dominio/produto')
 
 let produtos = []
+let id = 0
 
 function getProdutoPorDescricao(descricao) {
     return produtos.filter(p => p._descricao.toLowerCase().indexOf(descricao.toLowerCase()) !== -1)
 }
 
-function _getProdutoPorId(id) {
-    return produtos.find(p => p._codigo === id)
+function getProdutoPorId(id) {
+    return produtos.find(p => p._codigo == id)
 }
 
 function getProdutos() {
@@ -19,7 +20,7 @@ function adicionarProduto(produto) {
     const codigo = _controladorId()
 
     produtos.push(new Produto(codigo, produto.descricao, produto.un, produto.estoque, produto.precoMedio))
-    console.log(produtos)
+    // console.log(produtos)
 }
 
 function alterarProduto(produto) {
@@ -31,23 +32,20 @@ function alterarProduto(produto) {
     produtos.push(new Produto(codigo, produto.descricao, produto.un, produto.estoque, produto.precoMedio))
 }
 
-function deletarProduto(id) {
+function deletarProduto(codigo) {
 
-    const produto = _getProdutoPorId(id)
-    produtos.pop(produto)
+    let array = produtos.filter( p => p._codigo != codigo ); 
+    
+    produtos = array;
 }
 
 function _controladorId() {
-    let id = 0
-    if (produtos.length) {
-      id = produtos.reduce((a, b) => {
-        return Math.max(a._codigo, b._codigo)
-      })._codigo
-    }
-    return (id + 1)
+    id++;
+    return id;
 }
 
 module.exports = {
+    getProdutoPorId,
     getProdutoPorDescricao,
     getProdutos,
     adicionarProduto,

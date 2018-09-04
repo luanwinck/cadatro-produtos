@@ -20,11 +20,11 @@ class ApiService {
     static alterarProduto(codigo, descricao, un, estoque, precoMedio) {
         
         return axios.put(`${CONFIG.API_URL_BASE}/produto/alterar`, {
-            codigo: 2,
-            descricao: 'descricaoAlterado',
-            un: 'un',
-            estoque: 10,
-            precoMedio: 10.00,
+            codigo,
+            descricao,
+            un,
+            estoque,
+            precoMedio,
             }, configHeader)
     }
 
@@ -34,6 +34,10 @@ class ApiService {
 
     static getProdutoPorDescricao(descricao) {
         return axios.get(`${CONFIG.API_URL_BASE}/produto/${descricao}`, configHeader)
+    }
+
+    static getProdutoPorId(id) {
+        return axios.get(`${CONFIG.API_URL_BASE}/produto/id/${id}`, configHeader)
     }
 }
 

@@ -8,6 +8,14 @@ exports.get = (req, res, next) => {
     res.status(200).send(produtosFiltrados);
 };
 
+exports.getById = (req, res, next) => {
+    let id = req.params.id;
+
+    let produtoFiltrado = produtoService.getProdutoPorId(id)
+    
+    res.status(200).send(produtoFiltrado);
+};
+
 exports.getAll = (req, res, next) => {
 
     let produtos = produtoService.getProdutos()
