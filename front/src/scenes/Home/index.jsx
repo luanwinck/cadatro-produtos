@@ -7,6 +7,7 @@ import { Button, Table, Row, Input, Icon } from 'react-materialize'
 
 import GetProdutosService from '../../services/GetProdutosService'
 import GetProdutoPorDescricaoService from '../../services/GetProdutoPorDescricaoService'
+import DeletarProdutoService from '../../services/DeletarProdutoService'
 
 export default class Home extends Component {
   constructor(props) {
@@ -72,6 +73,17 @@ export default class Home extends Component {
   });
 };
 
+_deleteProduto = (codigo) => {
+    DeletarProdutoService
+        .deletarProduto(codigo)
+        .then((result) => {
+            this.setState({
+                produtos: result.data
+            })
+        }).catch((err) => {
+        })
+}
+
 
   _logout = () => {
     this.setState({
@@ -80,7 +92,7 @@ export default class Home extends Component {
   };
 
   renderProdutos() {
-    return this.state.produtos.map((p,k) => {
+    return this.state.produtos.sort((a,b) => a._codigo >  b._codigo).map((p,k) => {
       return<tr>
             <td>{p._codigo}</td>
             <td>{p._descricao}</td>
@@ -90,12 +102,13 @@ export default class Home extends Component {
             <td>{p._estoque * p._precoMedio}</td>
             <td>
                 <span className="icons" onClick={() => this._goToEditProduto(p._codigo)}><Icon>create</Icon></span>
-                <span className="icons"><Icon>clear</Icon></span>
+                <span className="icons" onClick={() => this._deleteProduto(p._codigo)}><Icon>clear</Icon></span>
             </td>
           </tr>
     })
   }
-  
+
+
 
   render() {
     if (this.state.shouldRedirectLogin) {

@@ -37,6 +37,8 @@ function deletarProduto(codigo) {
     let array = produtos.filter( p => p._codigo != codigo ); 
     
     produtos = array;
+
+    return produtos;
 }
 
 function _controladorId() {

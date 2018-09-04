@@ -2,45 +2,46 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 
 import { Row, Input, Button } from 'react-materialize'
+import Alert from '../../components/generic/Alert/index'
 
 import CadastrarProdutoService from '../../services/CadastrarProdutoService'
 import AlterarProdutoService from '../../services/AlterarProdutoService'
 import GetProdutoPorIdService from '../../services/GetProdutoPorIdService'
 
 export default class CreateOrEditProduto extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      shouldRedirectHome: false,
-      codigo: '',
-      descricao: '',
-      un: '',
-      estoque: '',
-      precoMedio: '',
-      inputPreenchido: undefined,
-      editarProduto: false,
-      validations: {
-        descricao: {
-            isValid: true,
-            message: 'Descrição é obrigatória'
-        },
-        un: {
-            isValid: true,
-            message: 'UN é obrigatório'
-        },
-        estoque: {
-            isValid: true,
-            message: 'Estoque é obrigatório'
-        },
-        precoMedio: {
-            isValid: true,
-            message: 'Preço médio é obrigatório'
-        },
-      }
-    };
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            shouldRedirectHome: false,
+            codigo: '',
+            descricao: '',
+            un: '',
+            estoque: '',
+            precoMedio: '',
+            inputPreenchido: undefined,
+            editarProduto: false,
+            validations: {
+            descricao: {
+                isValid: true,
+                message: 'Descrição é obrigatória'
+            },
+            un: {
+                isValid: true,
+                message: 'UN é obrigatório'
+            },
+            estoque: {
+                isValid: true,
+                message: 'Estoque é obrigatório'
+            },
+            precoMedio: {
+                isValid: true,
+                message: 'Preço médio é obrigatório'
+            },
+            }
+        };
+    }
 
-  componentDidMount() {
+    componentDidMount() {
         if (!!this.props.match.params.codigo) {
             const codigo = this.props.match.params.codigo
 
@@ -66,23 +67,23 @@ export default class CreateOrEditProduto extends Component {
     }
 
 
-  handleChange = (event) => {
-      const target = event.target
-      const value = target.value
-      const name = target.name
-      this.setState({
-          [name]: value
-      })
-  }
+    handleChange = (event) => {
+        const target = event.target
+        const value = target.value
+        const name = target.name
+        this.setState({
+            [name]: value
+        })
+    }
 
-  _backToHome = () => {
+    _backToHome = () => {
     this.setState({
         shouldRedirectHome: true
     });
-  };
+    };
 
-  _cadastrarProduto = () => {
-      if (this._valiarProduto()) {
+    _cadastrarProduto = () => {
+        if (this._valiarProduto()) {
         const produto = this.state
         CadastrarProdutoService
         .cadastrarProduto(produto.descricao, produto.un, produto.estoque, produto.precoMedio)
@@ -100,12 +101,12 @@ export default class CreateOrEditProduto extends Component {
                     error: 'Erro ao cadastrar um novo produto',
                     success: ''
                 })
-                // this.setTempoAlert()
             })
-      }
-  };
+            this.setTempoAlert()
+        }
+    };
 
-  _alterarProduto = () => {
+    _alterarProduto = () => {
     if (this._valiarProduto()) {
         const produto = this.state
         AlterarProdutoService
@@ -115,19 +116,27 @@ export default class CreateOrEditProduto extends Component {
                     success: 'Produto alterado com sucesso!',
                     error: '',
                 })
-                // this.setTempoAlert()
             }).catch((err) => {
-                console.log('err')
-                // this.setState({
-                //     error: err.response.data.error,
-                //     success: ''
-                // })
-                // this.setTempoAlert()
+                this.setState({
+                    error: 'Erro ao alterar um novo produto',
+                    success: ''
+                })
             })
+            this.setTempoAlert()
     }
-  };
+    };
 
-  _valiarProduto() {
+    setTempoAlert() {
+        setTimeout(() => {
+            this.setState({
+                error: '',
+                success: ''
+            })
+        },3000)
+    }
+
+
+    _valiarProduto() {
     let validations = this.state.validations
     validations.descricao.isValid = this.state.descricao.length > 0
     validations.un.isValid = this.state.un.length > 0
@@ -150,99 +159,108 @@ export default class CreateOrEditProduto extends Component {
     } else {
         return true
     }
- }
-
-_renderErrorComponent(isValid, message) {
-    return isValid ? null : (
-        <span style={{ color: 'red' }}>{message}</span>
-    )
-}
-
-_renderDescricao() {
-    const descricaoValidation = this.state.validations.descricao
-    return <div><Input type="text" label="Descrição" s={12}
-            name="descricao"
-            onChange={this.handleChange}
-            value={this.state.descricao}
-            placeholder={this.state.inputPreenchido}/>
-            <br />
-            {this._renderErrorComponent(
-                descricaoValidation.isValid,
-                descricaoValidation.message
-            )}
-    </div> 
-}
-
-_renderUn() {
-    const unValidation = this.state.validations.un
-    return <div><Input type="text" label="UN" s={12}
-                name="un"
-                onChange={this.handleChange}
-                value={this.state.un} 
-                placeholder={this.state.inputPreenchido}/>
-            <br />
-            {this._renderErrorComponent(
-                unValidation.isValid,
-                unValidation.message
-            )}
-    </div> 
-}
-
-_renderEstoque() {
-    const estoqueValidation = this.state.validations.estoque
-    return <div><Input type="number" label="Estoque" s={12} 
-                name="estoque"
-                onChange={this.handleChange}
-                value={this.state.estoque} 
-                placeholder={this.state.inputPreenchido}/>
-            <br />
-            {this._renderErrorComponent(
-                estoqueValidation.isValid,
-                estoqueValidation.message
-            )}
-    </div> 
-}
-
-_renderPrecoMedio() {
-    const precoMedioValidation = this.state.validations.precoMedio
-    return <div><Input type="number" label="Preço Médio" s={12}
-                name="precoMedio"
-                onChange={this.handleChange}
-                value={this.state.precoMedio} 
-                placeholder={this.state.inputPreenchido}/>
-            <br />
-            {this._renderErrorComponent(
-                precoMedioValidation.isValid,
-                precoMedioValidation.message
-            )}
-    </div> 
-}
-
-
-
-
-
-  render() {
-    if (this.state.shouldRedirectHome) {
-        return <Redirect to="/home" />
     }
 
-    return (
-      <div>
-          <Row>
-              {this._renderDescricao()}
-              {this._renderUn()}
-              {this._renderEstoque()}
-              {this._renderPrecoMedio()}
-              
-          </Row>
+    _renderErrorComponent(isValid, message) {
+        return isValid ? null : (
+            <span style={{ color: 'red' }}>{message}</span>
+        )
+    }
 
-          <Button className='btn' waves='light' onClick={this._backToHome}>Home</Button>
+    _renderDescricao() {
+        const descricaoValidation = this.state.validations.descricao
+        return <div><Input type="text" label="Descrição" s={12}
+                name="descricao"
+                onChange={this.handleChange}
+                value={this.state.descricao}
+                placeholder={this.state.inputPreenchido}/>
+                <br />
+                {this._renderErrorComponent(
+                    descricaoValidation.isValid,
+                    descricaoValidation.message
+                )}
+        </div> 
+    }
 
-          {this.state.editarProduto ? 
-            <Button className='btn' waves='light' onClick={this._alterarProduto}>Alterar produto</Button> : 
-            <Button className='btn' waves='light' onClick={this._cadastrarProduto}>Cadastrar produto</Button>}
-      </div>
-    );
-  }
+    _renderUn() {
+        const unValidation = this.state.validations.un
+        return <div><Input type="text" label="UN" s={12}
+                    name="un"
+                    onChange={this.handleChange}
+                    value={this.state.un} 
+                    placeholder={this.state.inputPreenchido}/>
+                <br />
+                {this._renderErrorComponent(
+                    unValidation.isValid,
+                    unValidation.message
+                )}
+        </div> 
+    }
+
+    _renderEstoque() {
+        const estoqueValidation = this.state.validations.estoque
+        return <div><Input type="number" label="Estoque" s={12} 
+                    name="estoque"
+                    onChange={this.handleChange}
+                    value={this.state.estoque} 
+                    placeholder={this.state.inputPreenchido}/>
+                <br />
+                {this._renderErrorComponent(
+                    estoqueValidation.isValid,
+                    estoqueValidation.message
+                )}
+        </div> 
+    }
+
+    _renderPrecoMedio() {
+        const precoMedioValidation = this.state.validations.precoMedio
+        return <div><Input type="number" label="Preço Médio" s={12}
+                    name="precoMedio"
+                    onChange={this.handleChange}
+                    value={this.state.precoMedio} 
+                    placeholder={this.state.inputPreenchido}/>
+                <br />
+                {this._renderErrorComponent(
+                    precoMedioValidation.isValid,
+                    precoMedioValidation.message
+                )}
+        </div> 
+    }
+
+    _renderSuccess() {
+        return this.state.success ? <Alert alertType='success' text={this.state.success}/> : undefined
+    }
+
+    _renderError() {
+        return this.state.error ? <Alert alertType='danger' text={this.state.error}/> : undefined
+    }
+
+
+    render() {
+        if (this.state.shouldRedirectHome) {
+            return <Redirect to="/home" />
+        }
+
+        return (
+            <div>
+                {this._renderSuccess()}
+                {this._renderError()}
+                {this.state.editarProduto ? 
+                <h1>Editar produto</h1> :
+                <h1>Cadastrar um novo produto</h1> }
+                <Row>
+                    {this._renderDescricao()}
+                    {this._renderUn()}
+                    {this._renderEstoque()}
+                    {this._renderPrecoMedio()}
+                </Row>
+
+                <Button className='btn' waves='light' onClick={this._backToHome}>Voltar</Button>
+
+                {this.state.editarProduto ? 
+                <Button className='btn' waves='light' onClick={this._alterarProduto}>Alterar produto</Button> : 
+                <Button className='btn' waves='light' onClick={this._cadastrarProduto}>Cadastrar produto</Button>}
+            </div>
+        );
+    }
 }

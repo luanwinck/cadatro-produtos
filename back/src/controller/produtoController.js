@@ -46,8 +46,8 @@ exports.put = (req, res) => {
 exports.delete = (req, res, next) => {
     let codigo = req.params.codigo;
 
-    produtoService.deletarProduto(codigo)
+    const produtos = produtoService.deletarProduto(codigo)
 
-    res.status(200).send();
+    res.status(200).send(produtos);
 };
 

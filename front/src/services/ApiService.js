@@ -28,6 +28,10 @@ class ApiService {
             }, configHeader)
     }
 
+    static deletarProduto(codigo) {
+        return axios.delete(`${CONFIG.API_URL_BASE}/produto/deletar/${codigo}`, configHeader)
+    }
+
     static getProdutos() {
         return axios.get(`${CONFIG.API_URL_BASE}/produto/`, configHeader)
     }
