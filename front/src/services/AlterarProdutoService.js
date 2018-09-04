@@ -1,8 +1,8 @@
 import ApiService from './ApiService'
 
 class AlterarProdutoService {
-    static alterarProduto(title, description, text, image, token) {
-        return ApiService.alterarProduto(title, description, text, image, token)
+    static alterarProduto(codigo, descricao, un, estoque, precoMedio) {
+        return ApiService.alterarProduto(codigo, descricao, un, estoque, precoMedio)
     }
 }
 

@@ -82,7 +82,7 @@ export default class Home extends Component {
             <td>{p._un}</td>
             <td>{p._estoque}</td>
             <td>{p._precoMedio}</td>
-            <td  onClick={() => this._goToEditProduto(p._codigo)}>{p._codigo}</td>
+            <td>{p._estoque * p._precoMedio}</td>
             <td>
                 <span className="icons" onClick={() => this._goToEditProduto(p._codigo)}><Icon>create</Icon></span>
                 <span className="icons"><Icon>clear</Icon></span>

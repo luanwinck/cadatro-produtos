@@ -7,18 +7,17 @@ const configHeader = { headers: {
 
 class ApiService {
     
-    static cadastrarProduto(title, description, text, image) {
+    static cadastrarProduto(descricao, un, estoque, precoMedio) {
         
         return axios.post(`${CONFIG.API_URL_BASE}/produto/adicionar`, {
-            codigo: 'codigo',
-            descricao: 'descricao',
-            un: 'un',
-            estoque: 10,
-            precoMedio: 7.00,
+            descricao,
+            un,
+            estoque,
+            precoMedio,
             }, configHeader)
     }
 
-    static alterarProduto(title, description, text, image) {
+    static alterarProduto(codigo, descricao, un, estoque, precoMedio) {
         
         return axios.put(`${CONFIG.API_URL_BASE}/produto/alterar`, {
             codigo: 2,
