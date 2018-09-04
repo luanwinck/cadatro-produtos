@@ -20,7 +20,6 @@ function adicionarProduto(produto) {
     const codigo = _controladorId()
 
     produtos.push(new Produto(codigo, produto.descricao, produto.un, produto.estoque, produto.precoMedio))
-    // console.log(produtos)
 }
 
 function alterarProduto(produto) {

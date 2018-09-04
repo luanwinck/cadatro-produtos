@@ -8,6 +8,7 @@ import axios from 'axios'
 import Loading from './components/generic/Loading/index'
 import Home from './scenes/Home/index'
 import Login from './scenes/Login/index'
+import Register from './scenes/Register/index'
 import CreateOrEditProduto from './scenes/CreateOrEditProduto/index'
 
 class App extends Component {
@@ -53,6 +54,7 @@ class App extends Component {
         <Switch>
             <Route exact path="/home" component={Home}/>
             <Route exact path="/login" component={Login}/>
+            <Route exact path="/registrar" component={Register}/>
             <Route exact path="/cadastrar-produto" component={CreateOrEditProduto}/>
             <Route exact path="/editar-produto/:codigo" component={CreateOrEditProduto}/>
 

@@ -1,0 +1,17 @@
+.container-login {
+    max-width: 800px;
+    margin: auto;
+}
+
+
+.container-login h1 {
+    margin-bottom: 100px;
+}
+
+.container-login span {
+    cursor: pointer;
+}
+
+.alert-login {
+    height: 50px;
+}

@@ -6,9 +6,23 @@ const configHeader = { headers: {
     'Access-Control-Allow-Origin': '*' } };
 
 class ApiService {
+
+    static registrar(nome, email, password) {
+        return axios.post(`${CONFIG.API_URL_BASE}/usuario/adicionar`, {
+            nome,
+            email,
+            password,
+            }, configHeader)
+    }
+
+    static login(email, password) {
+        return axios.post(`${CONFIG.API_URL_BASE}/usuario/login`, {
+            email,
+            password,
+            }, configHeader)
+    }
     
     static cadastrarProduto(descricao, un, estoque, precoMedio) {
-        
         return axios.post(`${CONFIG.API_URL_BASE}/produto/adicionar`, {
             descricao,
             un,
@@ -17,8 +31,7 @@ class ApiService {
             }, configHeader)
     }
 
-    static alterarProduto(codigo, descricao, un, estoque, precoMedio) {
-        
+    static alterarProduto(codigo, descricao, un, estoque, precoMedio) {  
         return axios.put(`${CONFIG.API_URL_BASE}/produto/alterar`, {
             codigo,
             descricao,
